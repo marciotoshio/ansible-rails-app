@@ -1,20 +1,48 @@
 - name: Install python-pycurl
   apt: pkg=python-pycurl state=latest
-  
+
 - name: Add PostgreSQL repo key
   apt_key: url=http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc
-  
+
 - name: Add PostgreSQL repo
   apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main'
 
 - name: Install PostgreSQL
   apt: pkg=postgresql-9.3 state=latest update_cache=true
-  
+
 - name: Copy valid pg_hba.conf
   template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.3/main/pg_hba.conf
-  
+
 - name: Copy valid postgresql.conf
   template: src=postgresql.conf.j2 dest=/etc/postgresql/9.3/main/postgresql.conf
 
 - name: Restart PostgreSQL
-  command: service postgresql restart
+  service:
+    name: postgresql
+    state: restarted
+
+- name: Install prerequisites for postgresql_user
+  apt: name={{ item }} state=latest
+  with_items:
+    - libpq-dev
+    - python-psycopg2
+
+- name: Ensure database is created
+  postgresql_db: name={{db_name}}
+  become: true
+  become_user: postgres
+
+- name: Ensure user has access to database
+  postgresql_user: db={{db_name}} name={{db_user}} password={{db_password}} priv=ALL
+  become: true
+  become_user: postgres
+
+- name: Ensure user does not have unnecessary privilege
+  postgresql_user: name={{db_user}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+  become: true
+  become_user: postgres
+
+- name: Ensure no other user can access the database
+  postgresql_privs: db={{db_name}} role=PUBLIC type=database priv=ALL state=absent
+  become: true
+  become_user: postgres

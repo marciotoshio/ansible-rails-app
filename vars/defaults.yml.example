@@ -1,0 +1,17 @@
+## webapp
+webserver_name: lorem.com
+deploy_directory: /home/jow/apps/super_app
+app_name: super_app
+app_secret: some_secret
+
+## db
+db_name: super_app_db
+db_user: super_app_db_user
+db_password: super_app_db_pass
+
+## stolen from https://github.com/jgrowl/ansible-playbook-ruby-from-src
+rubyTmpDir: /usr/local/src
+rubyUrl: https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.gz
+rubyCompressedFile: ruby-2.4.1.tar.gz
+rubyName: ruby-2.4.1
+tmpRubyPath: /usr/local/src/ruby-2.4.1

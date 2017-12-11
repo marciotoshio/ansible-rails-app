@@ -9,7 +9,8 @@ It installs:
 - memcached
 - Redis (for Sidekiq)
 
-Change the app name, host and deploy directory in <code>vars/defaults.yml</code>.
+Raname `vars/defaults.yml.example` to `vars/defaults.yml` 
+Change the values in `vars/defaults.yml`.
 
 To run:
 

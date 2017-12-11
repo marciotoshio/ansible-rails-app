@@ -1,1 +1,1 @@
-- include: sidekiq.yml tags=sidekiq
+- import_tasks: sidekiq.yml tags=sidekiq

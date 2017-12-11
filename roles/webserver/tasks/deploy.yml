@@ -1,5 +1,5 @@
-- name: Install app dependencies 
-  action: apt pkg=$item state=installed
+- name: Install app dependencies
+  action: apt pkg={{ item }} state=installed
   with_items:
     - libpq-dev
     - nodejs
@@ -8,7 +8,16 @@
   user: name=deploy comment="Application deployment user"
 
 - name: Create deployment directory
-  file: path=/webapps/{{ app_name }} owner=deploy group=deploy state=directory
+  file: path={{ deploy_directory }} owner=deploy group=deploy state=directory
+
+- name: Create deployment shared config directory
+  file: path={{ deploy_directory }}/shared/config owner=deploy group=deploy state=directory
+
+- name: Add database.yml
+  template: src=shared_config_database.yml.j2 dest={{ deploy_directory }}/shared/config/database.yml force=yes mode=755
+
+- name: Add secrets.yml
+  template: src=shared_config_secrets.yml.j2 dest={{ deploy_directory }}/shared/config/secrets.yml force=yes mode=755
 
 - name: Add puma runner
   template: src=usr_local_bin_run-puma.j2 dest=/usr/local/bin/run-puma force=yes mode=755
