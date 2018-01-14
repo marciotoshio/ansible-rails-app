@@ -46,3 +46,9 @@
   postgresql_privs: db={{db_name}} role=PUBLIC type=database priv=ALL state=absent
   become: true
   become_user: postgres
+
+- name: Enable PostgreSQL at boot
+  service:
+    name: postgresql
+    enabled: yes
+    state: started
