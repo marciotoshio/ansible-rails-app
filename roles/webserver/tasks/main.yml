@@ -2,3 +2,4 @@
 - import_tasks: nginx.yml tags=nginx
 - import_tasks: deploy.yml tags=deploy
 - import_tasks: memcached.yml tags=memcached
+- import_tasks: imagemagick.yml tags=imagemagick

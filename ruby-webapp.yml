@@ -11,4 +11,3 @@
     - webserver
     - database
     - sidekiq
-    - ansible-wkhtmltopdf
